@@ -1,6 +1,6 @@
 // loaders.gl, MIT license
 
-import * as node from '../node/buffer';
+import {toBufferNode, toArrayBufferNode} from '../node/buffer';
 
 /**
  * Check for Node.js `Buffer` (without triggering bundler to include Buffer polyfill on browser)
@@ -14,7 +14,7 @@ export function isBuffer(value: any): boolean {
  * @todo better data type
  */
 export function toBuffer(data: any): Buffer {
-  return node.toBuffer ? node.toBuffer(data) : data;
+  return toBufferNode ? toBufferNode(data) : data;
 }
 
 /**
@@ -23,7 +23,7 @@ export function toBuffer(data: any): Buffer {
 export function toArrayBuffer(data: unknown): ArrayBuffer {
   // Note: Should be called first, Buffers can trigger other detections below
   if (isBuffer(data)) {
-    return node.toArrayBuffer(data);
+    return toArrayBufferNode(data);
   }
 
   if (data instanceof ArrayBuffer) {

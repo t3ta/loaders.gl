@@ -1,6 +1,6 @@
 /* global importScripts */
 import {global, isBrowser, isWorker} from '../env-utils/globals';
-import * as node from '../node/require-utils.node';
+import {requireFromFile, requireFromString} from '../node/require-utils.node';
 import {assert} from '../env-utils/assert';
 import {VERSION as __VERSION__} from '../env-utils/version';
 
@@ -86,7 +86,7 @@ async function loadLibraryFromFile(libraryUrl: string): Promise<any> {
 
   if (!isBrowser) {
     try {
-      return node && node.requireFromFile && (await node.requireFromFile(libraryUrl));
+      return requireFromFile && (await requireFromFile(libraryUrl));
     } catch {
       return null;
     }
@@ -124,7 +124,7 @@ async function loadScriptFromFile(libraryUrl) {
 // we could create a`LibraryLoader` or`ModuleLoader`
 function loadLibraryFromString(scriptSource: string, id: string): null | any {
   if (!isBrowser) {
-    return node.requireFromString && node.requireFromString(scriptSource, id);
+    return requireFromString && requireFromString(scriptSource, id);
   }
 
   if (isWorker) {

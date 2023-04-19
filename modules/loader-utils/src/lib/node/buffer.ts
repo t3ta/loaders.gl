@@ -8,7 +8,7 @@
  * Converts Node.js `Buffer` to `ArrayBuffer` (without triggering bundler to include Buffer polyfill on browser)
  * @todo better data type
  */
-export function toArrayBuffer(buffer) {
+export function toArrayBufferNode(buffer) {
   // TODO - per docs we should just be able to call buffer.buffer, but there are issues
   if (Buffer.isBuffer(buffer)) {
     const typedArray = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.length);
@@ -20,7 +20,7 @@ export function toArrayBuffer(buffer) {
 /**
  * Convert (copy) ArrayBuffer to Buffer
  */
-export function toBuffer(binaryData: ArrayBuffer | ArrayBuffer | Buffer): Buffer {
+export function toBufferNode(binaryData: ArrayBuffer | ArrayBuffer | Buffer): Buffer {
   if (Buffer.isBuffer(binaryData)) {
     return binaryData;
   }

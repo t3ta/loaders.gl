@@ -1,6 +1,6 @@
 // Forked from https://github.com/kbajalc/parquets under MIT license (Copyright (c) 2017 ironSource Ltd.)
 import {isBrowser} from '../env-utils/globals';
-import * as fs from '../node/fs';
+import {createWriteStream} from '../node/fs';
 import type {Writable} from 'stream';
 
 export type WritableFile = {
@@ -30,7 +30,7 @@ export function makeWritableFile(
   }
 
   const outputStream: Writable =
-    typeof pathOrStream === 'string' ? fs.createWriteStream(pathOrStream, options) : pathOrStream;
+    typeof pathOrStream === 'string' ? createWriteStream(pathOrStream, options) : pathOrStream;
   return {
     write: async (buffer: Buffer) =>
       new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import * as fs from '../node/fs';
+import {readdir, stat, read, open, close, fstat, Stats} from '../node/fs';
 import {IFileSystem, IRandomAccessReadFileSystem} from '../../types';
 // import {fetchFile} from "../fetch/fetch-file"
 // import {selectLoader} from "../api/select-loader";
@@ -6,7 +6,7 @@ import {IFileSystem, IRandomAccessReadFileSystem} from '../../types';
 type Stat = {
   size: number;
   isDirectory: () => boolean;
-  info?: fs.Stats;
+  info?: Stats;
 };
 
 type ReadOptions = {
@@ -28,11 +28,11 @@ export default class NodeFileSystem implements IFileSystem, IRandomAccessReadFil
   }
 
   async readdir(dirname = '.', options?: {}): Promise<any[]> {
-    return await fs.readdir(dirname, options);
+    return await readdir(dirname, options);
   }
 
   async stat(path: string, options?: {}): Promise<Stat> {
-    const info = await fs.stat(path, options);
+    const info = await stat(path, options);
     return {size: Number(info.size), isDirectory: () => false, info};
   }
 
@@ -45,15 +45,15 @@ export default class NodeFileSystem implements IFileSystem, IRandomAccessReadFil
 
   // implements IRandomAccessFileSystem
   async open(path: string, flags: string | number, mode?: any): Promise<number> {
-    return await fs.open(path, flags);
+    return await open(path, flags);
   }
 
   async close(fd: number): Promise<void> {
-    return await fs.close(fd);
+    return await close(fd);
   }
 
   async fstat(fd: number): Promise<Stat> {
-    const info = await fs.fstat(fd);
+    const info = await fstat(fd);
     return info;
   }
 
@@ -65,7 +65,7 @@ export default class NodeFileSystem implements IFileSystem, IRandomAccessReadFil
     let totalBytesRead = 0;
     // Read in loop until we get required number of bytes
     while (totalBytesRead < length) {
-      const {bytesRead} = await fs.read(
+      const {bytesRead} = await read(
         fd,
         buffer,
         offset + totalBytesRead,

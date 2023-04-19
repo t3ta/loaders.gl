@@ -1,6 +1,6 @@
 // fs wrapper (promisified fs + avoids bundling fs in browsers)
 import fs from 'fs';
-import {toArrayBuffer} from './buffer';
+import {toArrayBufferNode} from './buffer';
 import {promisify2, promisify3} from './promisify';
 
 export type {Stats, WriteStream} from 'fs';
@@ -75,5 +75,5 @@ export async function _readToArrayBuffer(fd: number, start: number, length: numb
   if (bytesRead !== length) {
     throw new Error('fs.read failed');
   }
-  return toArrayBuffer(buffer);
+  return toArrayBufferNode(buffer);
 }
